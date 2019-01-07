@@ -37,7 +37,7 @@ void printArray(int deck[ROW_SIZE][COL_SIZE])
 
     for (size_t i = 0; i < COL_SIZE; i++) {
         for (size_t j = 0; j < ROW_SIZE; j++) {
-            cout.width(4);cout << std::right <<deck[j][i] << "  ";
+
         }
         cout << endl;
     }
