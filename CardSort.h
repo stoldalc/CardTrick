@@ -19,12 +19,25 @@ public:
   cardTrick(){
 
   };
-  void trick(){
-
+  int trick(){
+    int colSelection;
     fillDeck();
+
     printDeck();
-    int colSelection = prompt();
+    colSelection = prompt();
     sort(colSelection);
+
+    printDeck();
+    colSelection = prompt();
+    sort(colSelection);
+
+    printDeck();
+    colSelection = prompt();
+    sort(colSelection);
+
+
+    cout << "Was your number - " << findAns() << endl;
+    return findAns();
   }
 
   void fillDeck(){
@@ -49,24 +62,110 @@ public:
   };
 
 
-  void sort(int selection){
+  void sort(int colSelection){
   ///@param colSelection the col user says their number is in
-    int colSelection;
-    vector<int> hCol[7];
-    vector<int> aCol[7];
-    vector<int> bCol[7];
+
+    vector<int> hCol;
+    vector<int> aCol;
+    vector<int> bCol;
 
     if (colSelection == 1) {
-      hCol = deck[colSelection-1];
-      aCol = deck[1];
-      bCol = deck[2];
+      intArrFill(deck[colSelection-1],hCol);
+      intArrFill(deck[1],aCol);
+      intArrFill(deck[2],bCol);
+
+      pickCardsUp(hCol,aCol,bCol);
 
     }
+    else if(colSelection == 2){
+      intArrFill(deck[colSelection-1],hCol);
+      intArrFill(deck[0],aCol);
+      intArrFill(deck[2],bCol);
 
+      pickCardsUp(hCol,aCol,bCol);
+    }
+    else if(colSelection == 3){
+      intArrFill(deck[colSelection-1],hCol);
+      intArrFill(deck[0],aCol);
+      intArrFill(deck[1],bCol);
 
-
-
+      pickCardsUp(hCol,aCol,bCol);
+    }
   };
+
+  int findAns(){
+    int adjCnt = 0;
+
+    for (size_t i = 0; i < COL_SIZE; i++)
+    {
+        for (size_t j = 0; j < ROW_SIZE; j++)
+        {
+            if (adjCnt == 10)
+            {
+                return deck[j][i];
+            }
+            adjCnt++;
+        }
+    }
+    return -1;
+  };
+
+  void intArrFill(int src[],vector<int> &dest)
+  {
+
+    for (int i = COL_SIZE-1; i >= 0; i--) {
+      //cout << "I: " << i << endl;
+      dest.push_back(src[i]);
+    }
+  };
+
+  void pickCardsUp(vector<int> &selectedCol,vector<int> &aCol,vector<int> &bCol){
+
+    int cnt = 0;
+    int arrIndex = 0;
+    int adjCnt = 0;
+    int cardsInHand[21];
+
+
+
+    while (cnt < 7) {
+
+        cardsInHand[cnt] = aCol[cnt];
+
+        arrIndex++;
+        cnt++;
+    }
+    arrIndex = 0;
+    while (cnt < 14) {
+
+        cardsInHand[cnt] = selectedCol[arrIndex];
+
+        arrIndex++;
+        cnt++;
+    }
+    arrIndex = 0;
+    while (cnt < 21) {
+
+        cardsInHand[cnt] = bCol[arrIndex];
+
+        arrIndex++;
+        cnt++;
+    }
+
+//refilling the deck from 1D array
+    for (size_t i = 0; i < COL_SIZE; i++)
+    {
+        for (size_t j = 0; j < ROW_SIZE; j++)
+        {
+            deck[j][i] = cardsInHand[adjCnt];
+            adjCnt++;
+        }
+    }
+    cnt = 0;
+    adjCnt = 0;
+    arrIndex = 0;
+  }
+
   inline void intCpy(){
 
   };
@@ -87,6 +186,14 @@ public:
       }
     }
     return colSelection;
+  };
+
+  void printV(vector<int> v)
+  {
+    for (size_t i = 0; i < v.size(); i++) {
+      cout << v[i] << " ";
+    }
+    cout << endl;
   };
 
 private:
